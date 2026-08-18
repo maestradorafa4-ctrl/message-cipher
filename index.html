@@ -4,7 +4,7 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AES Secret Message Feed</title>
+  <title>🔐 AES Secret Message Feed</title>
 
   <style>
     * {
@@ -27,6 +27,10 @@
     h1 {
       text-align: center;
       margin-bottom: 8px;
+    }
+
+    h2 {
+      margin-top: 0;
     }
 
     .subtitle {
@@ -103,6 +107,14 @@
       color: #94a3b8;
     }
 
+    .success {
+      color: #86efac;
+    }
+
+    .error {
+      color: #fca5a5;
+    }
+
     .message {
       background: #0f172a;
       border: 1px solid #334155;
@@ -128,6 +140,9 @@
       overflow-wrap: anywhere;
       max-height: 100px;
       overflow: auto;
+      padding: 8px;
+      border-radius: 6px;
+      background: #020617;
     }
 
     .decrypt-area {
@@ -155,12 +170,15 @@
       padding: 30px;
     }
 
-    .success {
-      color: #86efac;
+    .feed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
 
-    .error {
-      color: #fca5a5;
+    .feed-header button {
+      margin-top: 0;
     }
   </style>
 </head>
@@ -169,14 +187,14 @@
 
 <div class="container">
 
-  <h1>🔐 Secret Message Feed</h1>
+  <h1>🔐 AES Secret Message Feed</h1>
 
   <div class="subtitle">
-    Encrypt a message with AES and challenge others to decrypt it.
+    Encrypt a message and publish it for others to try to decrypt.
   </div>
 
 
-  <!-- SEND MESSAGE -->
+  <!-- CREATE MESSAGE -->
 
   <div class="card">
 
@@ -188,6 +206,7 @@
 
     <textarea
       id="message"
+      maxlength="10000"
       placeholder="Enter your secret message..."
     ></textarea>
 
@@ -205,8 +224,8 @@
 
 
     <div class="small">
-      Your secret key never leaves this browser and is never
-      stored in Google Sheets.
+      Your secret key is processed locally in your browser.
+      It is never stored in Google Sheets.
     </div>
 
 
@@ -214,7 +233,7 @@
       id="sendButton"
       onclick="sendMessage()"
     >
-      Encrypt & Publish
+      🔒 Encrypt & Publish
     </button>
 
 
@@ -230,21 +249,15 @@
 
   <div class="card">
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    ">
+    <div class="feed-header">
 
-      <h2>Public Feed</h2>
+      <h2>🌐 Public Feed</h2>
 
       <button
         class="secondary"
         onclick="loadMessages()"
-        style="margin-top:0"
       >
-        Refresh
+        ↻ Refresh
       </button>
 
     </div>
@@ -267,26 +280,33 @@
 
 /*
 ==================================================
-GOOGLE APPS SCRIPT API
+GOOGLE APPS SCRIPT WEB APP
 ==================================================
 */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzGknFDMouMIZNBTzUSBF1Y7_wyo_bGK0oZ2l_WXBqAG2w2fQ2I4Y5xITBVpYLK2Ijn/exec";
+  "https://script.google.com/macros/s/AKfycbyIOvDfZ9TVdI-vwCBMi9_UFvMUU6tG_8G_7qC0WcAzN-xjWi1r8Q6PuAIUqiKh1Q5voA/exec";
 
 
 /*
 ==================================================
-AES SETTINGS
+CRYPTO SETTINGS
 ==================================================
+
+AES-256-GCM
+PBKDF2
+SHA-256
+150,000 iterations
+
+The secret key stays inside the browser.
 */
 
-const ITERATIONS = 150000;
+const PBKDF2_ITERATIONS = 150000;
 
 
 /*
 ==================================================
-BASE64 FUNCTIONS
+BASE64
 ==================================================
 */
 
@@ -294,16 +314,8 @@ function bytesToBase64(bytes) {
 
   let binary = "";
 
-  for (
-    let i = 0;
-    i < bytes.length;
-    i++
-  ) {
-
-    binary +=
-      String.fromCharCode(
-        bytes[i]
-      );
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
   }
 
   return btoa(binary);
@@ -312,20 +324,12 @@ function bytesToBase64(bytes) {
 
 function base64ToBytes(base64) {
 
-  const binary =
-    atob(base64);
+  const binary = atob(base64);
 
   const bytes =
-    new Uint8Array(
-      binary.length
-    );
+    new Uint8Array(binary.length);
 
-  for (
-    let i = 0;
-    i < binary.length;
-    i++
-  ) {
-
+  for (let i = 0; i < binary.length; i++) {
     bytes[i] =
       binary.charCodeAt(i);
   }
@@ -345,9 +349,7 @@ function randomBytes(length) {
   const bytes =
     new Uint8Array(length);
 
-  crypto.getRandomValues(
-    bytes
-  );
+  crypto.getRandomValues(bytes);
 
   return bytes;
 }
@@ -355,7 +357,7 @@ function randomBytes(length) {
 
 /*
 ==================================================
-DERIVE AES-256 KEY
+DERIVE AES KEY
 ==================================================
 */
 
@@ -381,9 +383,7 @@ async function deriveKey(
 
       false,
 
-      [
-        "deriveKey"
-      ]
+      ["deriveKey"]
     );
 
 
@@ -392,7 +392,7 @@ async function deriveKey(
     {
       name: "PBKDF2",
       salt: salt,
-      iterations: ITERATIONS,
+      iterations: PBKDF2_ITERATIONS,
       hash: "SHA-256"
     },
 
@@ -415,7 +415,7 @@ async function deriveKey(
 
 /*
 ==================================================
-ENCRYPT MESSAGE
+ENCRYPT
 ==================================================
 */
 
@@ -428,9 +428,17 @@ async function encryptMessage(
     new TextEncoder();
 
 
+  /*
+   * 128-bit random salt
+   */
+
   const salt =
     randomBytes(16);
 
+
+  /*
+   * 96-bit AES-GCM IV
+   */
 
   const iv =
     randomBytes(12);
@@ -461,9 +469,7 @@ async function encryptMessage(
 
     ciphertext:
       bytesToBase64(
-        new Uint8Array(
-          encrypted
-        )
+        new Uint8Array(encrypted)
       ),
 
     iv:
@@ -471,14 +477,13 @@ async function encryptMessage(
 
     salt:
       bytesToBase64(salt)
-
   };
 }
 
 
 /*
 ==================================================
-DECRYPT MESSAGE
+DECRYPT
 ==================================================
 */
 
@@ -506,9 +511,7 @@ async function decryptMessage(
 
       key,
 
-      base64ToBytes(
-        ciphertext
-      )
+      base64ToBytes(ciphertext)
     );
 
 
@@ -573,19 +576,21 @@ async function sendMessage() {
 
   button.disabled = true;
 
-
-  status.className =
-    "status";
-
+  status.className = "status";
 
   status.textContent =
-    "Encrypting message...";
+    "🔐 Encrypting locally...";
 
 
   try {
 
     /*
-     * The plaintext and secret key
+     * IMPORTANT:
+     *
+     * Only ciphertext, IV and salt
+     * are sent to Google Apps Script.
+     *
+     * The plaintext and password
      * never leave this browser.
      */
 
@@ -597,14 +602,13 @@ async function sendMessage() {
 
 
     status.textContent =
-      "Publishing encrypted message...";
+      "☁️ Publishing encrypted message...";
 
 
     const response =
       await fetch(
         API_URL,
         {
-
           method: "POST",
 
           headers: {
@@ -627,7 +631,6 @@ async function sendMessage() {
                 encrypted.salt
 
             })
-
         }
       );
 
@@ -644,6 +647,10 @@ async function sendMessage() {
       );
     }
 
+
+    /*
+     * Clear local inputs.
+     */
 
     document
       .getElementById("message")
@@ -665,15 +672,12 @@ async function sendMessage() {
 
     await loadMessages();
 
-
   } catch (error) {
 
     console.error(error);
 
-
     status.className =
       "status error";
-
 
     status.textContent =
       "❌ " +
@@ -691,7 +695,7 @@ async function sendMessage() {
 
 /*
 ==================================================
-LOAD PUBLIC FEED
+LOAD PUBLIC MESSAGES
 ==================================================
 */
 
@@ -731,7 +735,6 @@ async function loadMessages() {
     renderMessages(
       result.messages
     );
-
 
   } catch (error) {
 
@@ -798,13 +801,11 @@ function escapeHtml(value) {
 
 /*
 ==================================================
-RENDER PUBLIC FEED
+RENDER FEED
 ==================================================
 */
 
-function renderMessages(
-  messages
-) {
+function renderMessages(messages) {
 
   const feed =
     document
@@ -885,7 +886,7 @@ function renderMessages(
             class="secondary"
             onclick="decryptFeedMessage(this)"
           >
-            Try to Decrypt
+            🔓 Try to Decrypt
           </button>
 
 
@@ -911,7 +912,6 @@ function renderMessages(
       feed.appendChild(
         element
       );
-
     }
   );
 }
@@ -919,13 +919,11 @@ function renderMessages(
 
 /*
 ==================================================
-TRY TO DECRYPT
+DECRYPT FEED MESSAGE
 ==================================================
 */
 
-async function decryptFeedMessage(
-  button
-) {
+async function decryptFeedMessage(button) {
 
   const messageElement =
     button.closest(
@@ -984,7 +982,6 @@ async function decryptFeedMessage(
           .salt,
 
         password
-
       );
 
 
@@ -1016,14 +1013,14 @@ async function decryptFeedMessage(
     button.disabled = false;
 
     button.textContent =
-      "Try to Decrypt";
+      "🔓 Try to Decrypt";
   }
 }
 
 
 /*
 ==================================================
-ERROR DISPLAY
+ERROR MESSAGE
 ==================================================
 */
 
@@ -1035,14 +1032,11 @@ function showError(
   output.style.display =
     "block";
 
-
   output.style.background =
     "#7f1d1d";
 
-
   output.style.color =
     "#fecaca";
-
 
   output.textContent =
     message;
@@ -1051,7 +1045,7 @@ function showError(
 
 /*
 ==================================================
-INITIALIZE
+INITIAL LOAD
 ==================================================
 */
 
