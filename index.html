@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
   <base target="_top">
 
   <meta charset="UTF-8">
@@ -19,7 +21,6 @@
       box-sizing: border-box;
     }
 
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -35,7 +36,6 @@
       color: #e2e8f0;
     }
 
-
     .container {
       width: min(
         900px,
@@ -45,24 +45,20 @@
       margin: 40px auto;
     }
 
-
     h1 {
       text-align: center;
       margin-bottom: 8px;
     }
 
-
     h2 {
       margin-top: 0;
     }
-
 
     .subtitle {
       text-align: center;
       color: #94a3b8;
       margin-bottom: 30px;
     }
-
 
     .card {
       background: #1e293b;
@@ -71,7 +67,6 @@
       padding: 20px;
       margin-bottom: 20px;
     }
-
 
     textarea,
     input {
@@ -91,18 +86,15 @@
       outline: none;
     }
 
-
     textarea {
       min-height: 120px;
       resize: vertical;
     }
 
-
     textarea:focus,
     input:focus {
       border-color: #38bdf8;
     }
-
 
     label {
       display: block;
@@ -111,7 +103,6 @@
 
       margin: 14px 0 7px;
     }
-
 
     button {
       border: 0;
@@ -133,46 +124,37 @@
       color: #082f49;
     }
 
-
     button:hover {
       background: #7dd3fc;
     }
-
 
     button.secondary {
       background: #475569;
       color: white;
     }
 
-
     button.secondary:hover {
       background: #64748b;
     }
-
 
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-
     .status {
       margin-top: 12px;
       min-height: 20px;
-
       color: #94a3b8;
     }
-
 
     .success {
       color: #86efac;
     }
 
-
     .error {
       color: #fca5a5;
     }
-
 
     .message {
       background: #0f172a;
@@ -185,7 +167,6 @@
 
       margin-bottom: 14px;
     }
-
 
     .message-header {
       display: flex;
@@ -203,12 +184,10 @@
       flex-wrap: wrap;
     }
 
-
     .username {
       color: #38bdf8;
       font-weight: 700;
     }
-
 
     .ciphertext {
       font-family: monospace;
@@ -232,11 +211,9 @@
       background: #020617;
     }
 
-
     .decrypt-area {
       margin-top: 10px;
     }
-
 
     .decrypted {
       display: none;
@@ -252,7 +229,6 @@
       overflow-wrap: anywhere;
     }
 
-
     .small {
       font-size: 12px;
 
@@ -261,7 +237,6 @@
       margin-top: 8px;
     }
 
-
     .empty {
       text-align: center;
 
@@ -269,7 +244,6 @@
 
       padding: 30px;
     }
-
 
     .feed-header {
       display: flex;
@@ -281,11 +255,9 @@
       gap: 10px;
     }
 
-
     .feed-header button {
       margin-top: 0;
     }
-
 
     @media (max-width: 600px) {
 
@@ -294,11 +266,9 @@
         margin: 20px auto;
       }
 
-
       .card {
         padding: 15px;
       }
-
 
       .feed-header {
         align-items: flex-start;
@@ -327,24 +297,18 @@
   </div>
 
 
-  <!-- =========================================
-       CREATE MESSAGE
-  ========================================== -->
+  <!-- CREATE MESSAGE -->
 
   <div class="card">
-
 
     <h2>
       Send a Secret Message
     </h2>
 
 
-    <!-- USERNAME -->
-
     <label for="username">
       Username
     </label>
-
 
     <input
       id="username"
@@ -355,12 +319,9 @@
     >
 
 
-    <!-- MESSAGE -->
-
     <label for="message">
       Message
     </label>
-
 
     <textarea
       id="message"
@@ -369,12 +330,9 @@
     ></textarea>
 
 
-    <!-- SECRET KEY -->
-
     <label for="secretKey">
       Secret Key
     </label>
-
 
     <input
       id="secretKey"
@@ -389,8 +347,6 @@
     </div>
 
 
-    <!-- SEND -->
-
     <button
       id="sendButton"
       onclick="sendMessage()"
@@ -404,24 +360,18 @@
       class="status"
     ></div>
 
-
   </div>
 
 
-  <!-- =========================================
-       PUBLIC FEED
-  ========================================== -->
+  <!-- PUBLIC FEED -->
 
   <div class="card">
 
-
     <div class="feed-header">
-
 
       <h2>
         🌐 Public Feed
       </h2>
-
 
       <button
         class="secondary"
@@ -429,7 +379,6 @@
       >
         ↻ Refresh
       </button>
-
 
     </div>
 
@@ -441,7 +390,6 @@
       </div>
 
     </div>
-
 
   </div>
 
@@ -459,7 +407,7 @@ GOOGLE APPS SCRIPT WEB APP
 */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzGlopW2ABEf3gHAdngndCRyOZklw8PXfjdeZvdzoicbvdCsrVJuRHIg1mUqvj3yDZAkQ/exec";
+  "https://script.google.com/macros/s/AKfycbzpHhRV9Ux99iKcWFre9T77_9TW9qohi5NjeT9phcWnZgTZ2BwRfjhaXAaTDmVrTow4KQ/exec";
 
 
 /*
@@ -481,7 +429,6 @@ function bytesToBase64(bytes) {
 
   let binary = "";
 
-
   for (
     let i = 0;
     i < bytes.length;
@@ -492,8 +439,8 @@ function bytesToBase64(bytes) {
       String.fromCharCode(
         bytes[i]
       );
-  }
 
+  }
 
   return btoa(binary);
 }
@@ -504,12 +451,10 @@ function base64ToBytes(base64) {
   const binary =
     atob(base64);
 
-
   const bytes =
     new Uint8Array(
       binary.length
     );
-
 
   for (
     let i = 0;
@@ -519,8 +464,8 @@ function base64ToBytes(base64) {
 
     bytes[i] =
       binary.charCodeAt(i);
-  }
 
+  }
 
   return bytes;
 }
@@ -528,7 +473,7 @@ function base64ToBytes(base64) {
 
 /*
 ==================================================
-SECURE RANDOM BYTES
+RANDOM BYTES
 ==================================================
 */
 
@@ -537,11 +482,9 @@ function randomBytes(length) {
   const bytes =
     new Uint8Array(length);
 
-
   crypto.getRandomValues(
     bytes
   );
-
 
   return bytes;
 }
@@ -560,7 +503,6 @@ async function deriveKey(
 
   const encoder =
     new TextEncoder();
-
 
   const passwordKey =
     await crypto.subtle.importKey(
@@ -595,6 +537,7 @@ async function deriveKey(
         PBKDF2_ITERATIONS,
 
       hash: "SHA-256"
+
     },
 
     passwordKey,
@@ -603,6 +546,7 @@ async function deriveKey(
       name: "AES-GCM",
 
       length: 256
+
     },
 
     false,
@@ -613,12 +557,13 @@ async function deriveKey(
     ]
 
   );
+
 }
 
 
 /*
 ==================================================
-ENCRYPT MESSAGE
+ENCRYPT
 ==================================================
 */
 
@@ -630,26 +575,12 @@ async function encryptMessage(
   const encoder =
     new TextEncoder();
 
-
-  /*
-   * Random 128-bit salt
-   */
-
   const salt =
     randomBytes(16);
-
-
-  /*
-   * Random 96-bit AES-GCM IV
-   */
 
   const iv =
     randomBytes(12);
 
-
-  /*
-   * Derive AES-256 key
-   */
 
   const key =
     await deriveKey(
@@ -657,10 +588,6 @@ async function encryptMessage(
       salt
     );
 
-
-  /*
-   * Encrypt
-   */
 
   const encrypted =
     await crypto.subtle.encrypt(
@@ -678,11 +605,6 @@ async function encryptMessage(
 
     );
 
-
-  /*
-   * Return all information
-   * required for decryption.
-   */
 
   return {
 
@@ -704,12 +626,13 @@ async function encryptMessage(
       )
 
   };
+
 }
 
 
 /*
 ==================================================
-DECRYPT MESSAGE
+DECRYPT
 ==================================================
 */
 
@@ -739,6 +662,7 @@ async function decryptMessage(
           base64ToBytes(
             iv
           )
+
       },
 
       key,
@@ -754,96 +678,17 @@ async function decryptMessage(
     .decode(
       decrypted
     );
+
 }
 
 
 /*
 ==================================================
-CREATE STORAGE VALUE
-==================================================
-
-The spreadsheet only has one Ciphertext
-column, so ciphertext + IV + salt are
-stored together as JSON.
-
-This allows the feed to decrypt messages
-without requiring separate IV/Salt columns.
-*/
-
-function packageEncryptedData(
-  encrypted
-) {
-
-  return JSON.stringify({
-
-    ciphertext:
-      encrypted.ciphertext,
-
-    iv:
-      encrypted.iv,
-
-    salt:
-      encrypted.salt
-
-  });
-}
-
-
-/*
-==================================================
-READ STORAGE VALUE
-==================================================
-*/
-
-function unpackEncryptedData(
-  value
-) {
-
-  /*
-   * New format
-   */
-
-  try {
-
-    const parsed =
-      JSON.parse(
-        value
-      );
-
-
-    if (
-      parsed &&
-      parsed.ciphertext &&
-      parsed.iv &&
-      parsed.salt
-    ) {
-
-      return parsed;
-    }
-
-  } catch (error) {
-
-    // Not JSON.
-  }
-
-
-  /*
-   * If an old message exists,
-   * return null rather than crashing.
-   */
-
-  return null;
-}
-
-
-/*
-==================================================
-PUBLISH MESSAGE
+SEND MESSAGE
 ==================================================
 */
 
 async function sendMessage() {
-
 
   const username =
     document
@@ -884,10 +729,6 @@ async function sendMessage() {
       );
 
 
-  /*
-   * Validate username
-   */
-
   if (!username) {
 
     status.className =
@@ -899,10 +740,6 @@ async function sendMessage() {
     return;
   }
 
-
-  /*
-   * Validate message
-   */
 
   if (!message.trim()) {
 
@@ -916,10 +753,6 @@ async function sendMessage() {
   }
 
 
-  /*
-   * Validate key
-   */
-
   if (!secretKey) {
 
     status.className =
@@ -932,11 +765,8 @@ async function sendMessage() {
   }
 
 
-  /*
-   * Disable button
-   */
-
-  button.disabled = true;
+  button.disabled =
+    true;
 
 
   status.className =
@@ -949,11 +779,6 @@ async function sendMessage() {
 
   try {
 
-
-    /*
-     * Encrypt message locally.
-     */
-
     const encrypted =
       await encryptMessage(
         message,
@@ -962,33 +787,31 @@ async function sendMessage() {
 
 
     /*
-     * Package ciphertext,
-     * IV and salt into one
-     * spreadsheet field.
+     * Keep the existing 5-column
+     * storage format.
+     *
+     * IV and salt are NOT stored
+     * separately.
      */
 
     const storedCiphertext =
-      packageEncryptedData(
-        encrypted
-      );
+      JSON.stringify({
+
+        ciphertext:
+          encrypted.ciphertext,
+
+        iv:
+          encrypted.iv,
+
+        salt:
+          encrypted.salt
+
+      });
 
 
     status.textContent =
       "☁️ Publishing message...";
 
-
-    /*
-     * Send to Apps Script.
-     *
-     * IMPORTANT:
-     *
-     * This matches the new Code.gs:
-     *
-     * username
-     * ciphertext
-     * plaintext
-     * key
-     */
 
     const response =
       await fetch(
@@ -1017,12 +840,6 @@ async function sendMessage() {
               ciphertext:
                 storedCiphertext,
 
-              /*
-               * These two fields are stored
-               * because you requested the
-               * Plaintext and Key columns.
-               */
-
               plaintext:
                 message,
 
@@ -1040,10 +857,6 @@ async function sendMessage() {
       await response.json();
 
 
-    /*
-     * Check server result.
-     */
-
     if (
       !result.success
     ) {
@@ -1052,12 +865,9 @@ async function sendMessage() {
         result.error ||
         "Unable to publish message."
       );
+
     }
 
-
-    /*
-     * Clear fields.
-     */
 
     document
       .getElementById(
@@ -1073,10 +883,6 @@ async function sendMessage() {
       .value = "";
 
 
-    /*
-     * Success.
-     */
-
     status.className =
       "status success";
 
@@ -1085,15 +891,10 @@ async function sendMessage() {
       "✅ Message encrypted and published!";
 
 
-    /*
-     * Reload feed.
-     */
-
     await loadMessages();
 
 
   } catch (error) {
-
 
     console.error(
       error
@@ -1111,9 +912,7 @@ async function sendMessage() {
         "An error occurred."
       );
 
-
   } finally {
-
 
     button.disabled =
       false;
@@ -1125,12 +924,11 @@ async function sendMessage() {
 
 /*
 ==================================================
-LOAD PUBLIC MESSAGES
+LOAD MESSAGES
 ==================================================
 */
 
 async function loadMessages() {
-
 
   const feed =
     document
@@ -1145,13 +943,10 @@ async function loadMessages() {
 
   try {
 
-
     const response =
       await fetch(
-
         API_URL +
         "?action=list"
-
       );
 
 
@@ -1167,6 +962,7 @@ async function loadMessages() {
         result.error ||
         "Unable to load messages."
       );
+
     }
 
 
@@ -1176,7 +972,6 @@ async function loadMessages() {
 
 
   } catch (error) {
-
 
     console.error(
       error
@@ -1212,9 +1007,7 @@ ESCAPE HTML
 ==================================================
 */
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
   return String(value)
 
@@ -1248,14 +1041,11 @@ function escapeHtml(
 
 /*
 ==================================================
-RENDER FEED
+RENDER MESSAGES
 ==================================================
 */
 
-function renderMessages(
-  messages
-) {
-
+function renderMessages(messages) {
 
   const feed =
     document
@@ -1280,11 +1070,7 @@ function renderMessages(
 
 
   messages.forEach(
-    function(
-      message,
-      index
-    ) {
-
+    function(message) {
 
       const element =
         document.createElement(
@@ -1303,36 +1089,9 @@ function renderMessages(
 
 
       /*
-       * Read the bundled
-       * ciphertext / IV / salt.
-       */
-
-      const encryptedData =
-        unpackEncryptedData(
-          message.ciphertext
-        );
-
-
-      /*
-       * Display a useful ciphertext
-       * even if the stored value is JSON.
-       */
-
-      let displayCiphertext =
-        message.ciphertext;
-
-
-      if (
-        encryptedData
-      ) {
-
-        displayCiphertext =
-          encryptedData.ciphertext;
-      }
-
-
-      /*
-       * Build message HTML.
+       * Column C contains only
+       * the ciphertext returned
+       * by Code.gs.
        */
 
       element.innerHTML = `
@@ -1350,60 +1109,41 @@ function renderMessages(
 
           </span>
 
-
           <span>
-
             ${escapeHtml(
               date.toLocaleString()
             )}
-
           </span>
 
         </div>
 
 
         <div class="ciphertext">
-
           ${escapeHtml(
-            displayCiphertext
+            message.ciphertext
           )}
-
         </div>
 
 
         <div class="decrypt-area">
 
-
           <input
-
             type="password"
-
             class="decrypt-key"
-
             autocomplete="off"
-
             placeholder="Enter secret key"
-
           >
 
 
           <button
-
             class="secondary"
-
             onclick="decryptFeedMessage(this)"
-
           >
-
             🔓 Try to Decrypt
-
           </button>
 
 
-          <div
-            class="decrypted"
-          ></div>
-
+          <div class="decrypted"></div>
 
         </div>
 
@@ -1411,31 +1151,13 @@ function renderMessages(
 
 
       /*
-       * Store encrypted information
-       * on the message element.
+       * No IV/Salt are available because
+       * Code.gs intentionally removes them.
        */
 
-      if (
-        encryptedData
-      ) {
+      element.dataset.ciphertext =
+        message.ciphertext;
 
-        element.dataset.ciphertext =
-          encryptedData.ciphertext;
-
-
-        element.dataset.iv =
-          encryptedData.iv;
-
-
-        element.dataset.salt =
-          encryptedData.salt;
-
-      }
-
-
-      /*
-       * Add to feed.
-       */
 
       feed.appendChild(
         element
@@ -1451,22 +1173,26 @@ function renderMessages(
 ==================================================
 DECRYPT FEED MESSAGE
 ==================================================
+
+With only the 5 requested storage fields,
+the IV and salt have been discarded.
+
+Therefore previously stored messages
+cannot be decrypted from ciphertext + key
+alone.
+
+The button is kept so the interface
+doesn't break, but it explains the limitation.
+==================================================
 */
 
 async function decryptFeedMessage(
   button
 ) {
 
-
   const messageElement =
     button.closest(
       ".message"
-    );
-
-
-  const input =
-    messageElement.querySelector(
-      ".decrypt-key"
     );
 
 
@@ -1476,131 +1202,20 @@ async function decryptFeedMessage(
     );
 
 
-  const password =
-    input.value;
+  showError(
 
+    output,
 
-  /*
-   * Validate key.
-   */
+    "⚠️ This message cannot be decrypted because the IV and salt were not stored."
 
-  if (!password) {
-
-    showError(
-      output,
-      "Enter a secret key."
-    );
-
-    return;
-  }
-
-
-  /*
-   * Make sure encrypted
-   * metadata exists.
-   */
-
-  if (
-    !messageElement.dataset.ciphertext ||
-    !messageElement.dataset.iv ||
-    !messageElement.dataset.salt
-  ) {
-
-    showError(
-      output,
-      "This message is missing encryption data."
-    );
-
-    return;
-  }
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "Decrypting...";
-
-
-  try {
-
-
-    const plaintext =
-      await decryptMessage(
-
-        messageElement
-          .dataset
-          .ciphertext,
-
-        messageElement
-          .dataset
-          .iv,
-
-        messageElement
-          .dataset
-          .salt,
-
-        password
-
-      );
-
-
-    /*
-     * Successful decryption.
-     */
-
-    output.style.display =
-      "block";
-
-
-    output.style.background =
-      "#064e3b";
-
-
-    output.style.color =
-      "#d1fae5";
-
-
-    output.textContent =
-      plaintext;
-
-
-  } catch (error) {
-
-
-    console.error(
-      error
-    );
-
-
-    showError(
-
-      output,
-
-      "❌ Incorrect key or corrupted message."
-
-    );
-
-
-  } finally {
-
-
-    button.disabled =
-      false;
-
-
-    button.textContent =
-      "🔓 Try to Decrypt";
-
-  }
+  );
 
 }
 
 
 /*
 ==================================================
-ERROR MESSAGE
+SHOW ERROR
 ==================================================
 */
 
@@ -1639,4 +1254,5 @@ loadMessages();
 
 
 </body>
+
 </html>
